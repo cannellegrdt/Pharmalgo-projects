@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 #include <filesystem>
+#include <algorithm>
+#include <regex>
 
 CroixPharma croix;
 uint8_t bitmap[SIZE][SIZE];
@@ -40,12 +42,25 @@ bool hasEnding (std::string const &fullString, std::string const &ending) {
 
 void getAllPharmaFiles()
 {
-    const std::string path = "output/";
+    const std::string path = "VideoPlayer/output/";
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
         if (hasEnding(entry.path().string(), ".pharma")) {
             pharmaFiles.push_back(entry.path().string());
         }
     }
+    auto compare = [](const std::string &a, const std::string &b) {
+        std::regex rgx("[0-9]+");
+        std::smatch match_a;
+        std::smatch match_b;
+        std::string a_nb, b_nb;
+
+        if (std::regex_search(a.begin(), a.end(), match_a, rgx))
+            a_nb = match_a[0];
+        if (std::regex_search(b.begin(), b.end(), match_b, rgx))
+            b_nb = match_b[0];
+        return std::stoi(a_nb) < std::stoi(b_nb);
+    };
+    std::sort(pharmaFiles.begin(), pharmaFiles.end(), compare);
 }
 
 int main() {
@@ -54,6 +69,7 @@ int main() {
     }
 
     croix.begin();
+    croix.setSide(CroixPharma::BOTH);
     getAllPharmaFiles();
 
     while (true) {

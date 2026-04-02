@@ -5,9 +5,9 @@ cd "$SCRIPT_DIR"
 
 TIMEOUT=600  # 10 minutes
 
-ALL_PROJECTS=("DrimeLogo" "GameOfLife" "Matrix" "RealTimeEditor" "SimonSays" "SoundVisualizer" "Tetris" "VideoPlayer" "Warriors")
-GROUP1=("DrimeLogo" "GameOfLife" "SimonSays" "Tetris" "VideoPlayer" "Warriors") # w. Simulator/ and Lib_Croix/
-GROUP2=("Matrix" "RealTimeEditor" "SoundVisualizer") # w. SimulatorLGPIO
+ALL_PROJECTS=("DrimeLogo" "Matrix" "VideoPlayer" "Warriors")
+GROUP1=("DrimeLogo" "VideoPlayer" "Warriors") # w. Simulator/ and Lib_Croix/
+GROUP2=("Matrix") # w. SimulatorLGPIO
 
 SIMULATOR_PID=""
 PROJECT_PID=""

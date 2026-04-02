@@ -1,1 +1,12 @@
 .vscode
+.venv/
+pharmacy_cross
+Lib_Croix/output/*.png
+Lib_Croix/output/*.converted
+drimelogo
+gameoflife
+simonsays
+simulatorlgpio
+tetris
+videoplayer
+warriors

@@ -15,3 +15,6 @@ void sim_init();
 
 // Permet de définir la valeur d'un pin
 void sim(uint8_t pin, uint8_t value);
+
+// Permet de définir la valeur d'un pin pour une face spécifique (0=recto, 1=verso)
+void sim_face(uint8_t face, uint8_t pin, uint8_t value);

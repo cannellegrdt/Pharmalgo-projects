@@ -16,6 +16,9 @@ clock = pygame.time.Clock()
 
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 sock.bind(("0.0.0.0",1337))
+sock.setblocking(False)
+
+frame = [[0 for _ in range(24)] for _ in range(24)]
 
 def is_drawable(r,c):
     panel=(r//8,c//8)
@@ -28,17 +31,19 @@ while True:
             pygame.quit()
             exit()
 
-    data,_ = sock.recvfrom(65535)
-    frame=json.loads(data.decode())
+    try:
+        data,_ = sock.recvfrom(65535)
+        frame=json.loads(data.decode())
+    except (BlockingIOError, socket.error):
+        pass
 
     screen.fill((0,0,0))
 
     for r,c in itertools.product(range(24),repeat=2):
-
         if is_drawable(r,c):
-
             val=frame[r][c]/7
-            led=(30,210*val,30)
+            green_val=int(max(0, min(255, 210*val)))
+            led=(30,green_val,30)
 
             pygame.draw.circle(
                 screen,

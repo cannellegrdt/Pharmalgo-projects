@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacy Cross LED Editor</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+
+  <header id="header">
+    <div class="header-left">
+      <span class="logo-cross">+</span>
+      <h1>Pharmacy Cross LED Editor</h1>
+    </div>
+    <div class="header-center">
+      <span id="status-dot" class="status-dot"></span>
+      <span id="status-text">Ready</span>
+    </div>
+    <div class="header-right">
+      <label class="toggle-label" title="Auto-send every change to the simulator">
+        <input type="checkbox" id="autoSend" checked>
+        <span class="toggle-track"></span>
+        <span>Auto-send</span>
+      </label>
+      <button class="btn" id="sendBtn">Send Face</button>
+      <button class="btn btn-primary" id="sendBothBtn">Send Both</button>
+    </div>
+  </header>
+
+  <div id="workspace">
+
+    <nav id="toolbar">
+
+      <div class="tb-group">
+        <span class="tb-label">Tools</span>
+
+        <button class="tool-btn active" data-tool="pencil" title="Pencil  [P]">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          Pencil
+        </button>
+
+        <button class="tool-btn" data-tool="eraser" title="Eraser  [E]">
+          <svg viewBox="0 0 24 24"><path d="M15.14 3c-.51 0-1.02.2-1.41.59L2.59 14.73a2 2 0 0 0 0 2.83L5.03 20h7.66l8.72-8.72a2 2 0 0 0 0-2.83l-4.85-4.86A2 2 0 0 0 15.14 3zm-4.45 14H6.15l-2-2 5-5 4.54 4.54V17zm8.38-5.73-3.77 3.77L11 9.8l3.77-3.77a.5.5 0 0 1 .71 0l3.59 3.59c.2.19.2.51 0 .65z"/></svg>
+          Eraser
+        </button>
+
+        <button class="tool-btn" data-tool="fill" title="Flood Fill  [F]">
+          <svg viewBox="0 0 24 24"><path d="M16.56 8.94 7.62 0 6.21 1.41l2.38 2.38-5.15 5.15a2 2 0 0 0 0 2.12l5.5 5.5c.29.29.68.44 1.06.44s.77-.15 1.06-.44l5.5-5.5a2 2 0 0 0 0-2.12zM5.21 10 10 5.21 14.79 10H5.21zM19 11.5s-2 2.17-2 3.5a2 2 0 0 0 4 0c0-1.33-2-3.5-2-3.5z"/></svg>
+          Fill
+        </button>
+
+        <button class="tool-btn" data-tool="eyedropper" title="Eyedropper  [I]">
+          <svg viewBox="0 0 24 24"><path d="M20.71 5.63l-2.34-2.34a1 1 0 0 0-1.41 0l-3.12 3.12-1.41-1.42-1.42 1.42 1.41 1.41L3 17.25V21h3.75l9.81-9.88 1.41 1.41 1.42-1.42-1.42-1.41 3.12-3.12a1 1 0 0 0 .02-1.4l.6-.55zm-4.24 2.12-4.24-4.24L14 2l4.24 4.24-1.77 1.51z"/></svg>
+          Pick
+        </button>
+      </div>
+
+      <div class="tb-divider"></div>
+
+      <div class="tb-group">
+        <span class="tb-label">Brightness</span>
+        <div id="bswatches"></div>
+      </div>
+
+      <div class="tb-divider"></div>
+
+      <div class="tb-group">
+        <span class="tb-label">Actions</span>
+        <button class="tool-btn" id="clearAllBtn" title="Clear Face  [Del]">
+          <svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          Clear
+        </button>
+      </div>
+
+    </nav>
+
+    <div id="canvas-wrap">
+      <div id="face-tabs">
+        <button class="face-tab active" data-face="recto">RECTO</button>
+        <button class="face-tab" data-face="verso">VERSO</button>
+      </div>
+      <canvas id="canvas"></canvas>
+      <div id="cursor-hint">Click and drag to draw</div>
+    </div>
+
+    <aside id="sidebar">
+
+      <section class="sb-section">
+        <h3>Face active</h3>
+        <div id="face-indicator" class="face-indicator recto">RECTO</div>
+      </section>
+
+      <section class="sb-section">
+        <h3>Brightness</h3>
+        <div id="bright-preview"></div>
+        <div class="bright-val"><span id="bright-num">7</span><span class="dim">/7</span></div>
+        <input type="range" id="bright-slider" min="0" max="7" value="7">
+      </section>
+
+      <section class="sb-section">
+        <h3>Cursor</h3>
+        <div class="info-grid">
+          <span class="dim">Panel</span><span id="i-panel">—</span>
+          <span class="dim">Row</span>  <span id="i-row">—</span>
+          <span class="dim">Col</span>  <span id="i-col">—</span>
+          <span class="dim">Value</span><span id="i-val">—</span>
+        </div>
+      </section>
+
+      <section class="sb-section">
+        <h3>Keyboard</h3>
+        <div class="kblist">
+          <div><kbd>P</kbd> Pencil</div>
+          <div><kbd>E</kbd> Eraser</div>
+          <div><kbd>F</kbd> Fill</div>
+          <div><kbd>I</kbd> Eyedropper</div>
+          <div><kbd>0</kbd>–<kbd>7</kbd> Brightness</div>
+          <div><kbd>S</kbd> Send face</div>
+          <div><kbd>B</kbd> Send both</div>
+          <div><kbd>Tab</kbd> Switch face</div>
+          <div><kbd>Del</kbd> Clear face</div>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+</div>
+
+<script src="/static/editor.js"></script>
+</body>
+</html>

@@ -74,12 +74,10 @@ ensure_venv() {
         python3 -m venv "$SCRIPT_DIR/.venv"
     fi
 
-    for req in RealTimeEditor/requirements.txt SoundVisualizer/requirements.txt; do
-        if [ -f "$req" ]; then
-            echo "[Setup] Installation of dependencies : $req..."
-            "$SCRIPT_DIR/.venv/bin/pip" install -r "$req" --quiet
-        fi
-    done
+    if [ -f "./requirements.txt" ]; then
+        echo "[Setup] Installation of dependencies : ./requirements.txt..."
+        "$SCRIPT_DIR/.venv/bin/pip" install -r "./requirements.txt" --quiet
+    fi
 }
 
 

@@ -20,8 +20,7 @@ venv-install:
 		echo "[venv] Existing virtual environment."; \
 	fi
 	@echo "[pip] Installation of dependencies..."
-	@.venv/bin/pip install -r RealTimeEditor/requirements.txt --quiet
-	@.venv/bin/pip install -r SoundVisualizer/requirements.txt --quiet
+	@.venv/bin/pip install -r requirements.txt --quiet
 	@echo "[pip] OK"
 
 check-wiringpi:
